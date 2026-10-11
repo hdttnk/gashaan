@@ -1,0 +1,20 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import { CATALOG } from '../src/catalog';
+import { closestPoint, containsPoint, overlaps, shapeArea, shapeBounds, vertices } from '../src/geometry';
+const triangle = CATALOG.triangle.parts[0].shape;
+const origin = { x: 0, y: 0, angle: 0 };
+test('triangle geometry uses its edges for circle/polygon contact and picking', () => {
+  assert.ok(Math.abs(shapeArea(triangle) - 1.1 * 0.95 / 2) < 1e-9);
+  assert.equal(shapeBounds(triangle).origin.y, 2 / 3);
+  assert.equal(containsPoint(triangle, { x: 0.5, y: -0.5 }), false);
+  assert.equal(containsPoint(triangle, { x: 0, y: -0.5 }), true);
+  assert.equal(overlaps(triangle, origin, { type: 'circle', radius: 0.05 }, { x: 0.5, y: -0.5, angle: 0 }), false);
+  assert.equal(overlaps(triangle, origin, { type: 'circle', radius: 0.1 }, origin), true);
+  assert.equal(overlaps(triangle, origin, triangle, { x: 1.2, y: 0, angle: 0 }), false);
+  assert.equal(overlaps(triangle, origin, triangle, { x: 0.1, y: 0, angle: Math.PI }), true);
+  const p = closestPoint(triangle, { x: 0.4, y: -0.3 });
+  assert.ok(containsPoint(triangle, p));
+  const rotated = vertices(triangle, { x: 3, y: 4, angle: Math.PI / 2 });
+  assert.ok(Math.abs(rotated[2].x - (3 + 0.95 * 2 / 3)) < 1e-9);
+});

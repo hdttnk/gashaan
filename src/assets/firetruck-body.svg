@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="540" viewBox="0 0 600 270"><defs><linearGradient id="paint" x2="0" y2="1"><stop stop-color="#f85846"/><stop offset=".5" stop-color="#c62b2a"/><stop offset="1" stop-color="#811e2b"/></linearGradient><linearGradient id="glass" x2="1" y2="1"><stop stop-color="#c5e5ed"/><stop offset="1" stop-color="#324858"/></linearGradient><linearGradient id="metal" x2="0" y2="1"><stop stop-color="#d8e0e3"/><stop offset=".5" stop-color="#87969e"/><stop offset="1" stop-color="#e0e5e6"/></linearGradient><mask id="arches" maskUnits="userSpaceOnUse" x="0" y="0" width="600" height="270"><rect width="600" height="270" fill="white"/><circle cx="100" cy="294" r="76" fill="black"/><circle cx="500" cy="294" r="76" fill="black"/></mask></defs>
+<g mask="url(#arches)">
+<path d="M8 73 H438 Q452 73 461 89 L493 123 H585 Q593 123 593 140 V234 H8Z" fill="url(#paint)" stroke="#74232a" stroke-width="3"/>
+<rect x="31" y="91" width="167" height="115" rx="3" fill="url(#metal)" stroke="#5c6c76" stroke-width="3"/>
+<rect x="214" y="91" width="167" height="115" rx="3" fill="url(#metal)" stroke="#5c6c76" stroke-width="3"/>
+<path d="M34 107 H195 M34 124 H195 M34 141 H195 M34 158 H195 M34 175 H195 M34 192 H195 M217 107 H378 M217 124 H378 M217 141 H378 M217 158 H378 M217 175 H378 M217 192 H378" stroke="#657982" stroke-width="2" opacity=".6"/>
+<rect x="96" y="195" width="39" height="6" rx="2" fill="#41535e"/><rect x="277" y="195" width="39" height="6" rx="2" fill="#41535e"/>
+<path d="M449 91 L468 128 H575 V158 H449Z" fill="url(#glass)" stroke="#4d3740" stroke-width="4"/>
+<path d="M500 127 V156 M444 163 V229" stroke="#6c2530" stroke-width="3"/>
+<path d="M388 180 H591 V193 H388Z" fill="#f0ece4"/><rect x="460" y="169" width="21" height="5" rx="2" fill="#ece7dd"/>
+<rect x="562" y="201" width="25" height="14" rx="3" fill="#ffedbe"/><rect x="8" y="211" width="13" height="17" fill="#ffdb68"/>
+<path d="M2 230 H598 V243 H2Z" fill="url(#metal)"/>
+</g>
+<g stroke="#596d79" stroke-width="5" fill="none"><path d="M23 53 H414 M23 66 H414"/><path d="M40 53 V66 M70 53 V66 M100 53 V66 M130 53 V66 M160 53 V66 M190 53 V66 M220 53 V66 M250 53 V66 M280 53 V66 M310 53 V66 M340 53 V66 M370 53 V66 M400 53 V66"/></g>
+<rect x="480" y="107" width="58" height="16" rx="5" fill="#d8172b" stroke="#802333" stroke-width="2"/><path d="M488 111 H530" stroke="#ff968c" stroke-width="3"/>
+</svg>

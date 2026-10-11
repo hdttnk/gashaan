@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#e6e5dc" />
+    <title>がしゃーん！ラボ</title>
+  </head>
+  <body>
+    <main id="app" aria-label="がしゃーん！ラボ">
+      <div id="stage" aria-label="物体を配置して遊ぶ物理ステージ"></div>
+      <nav class="toolbar" aria-label="ゲームの操作">
+        <button id="palette-toggle" aria-controls="object-panel" aria-expanded="false">＋ もの</button>
+        <button id="pause">▶ 再生</button>
+        <button id="reset" aria-label="やりなおす">↶ やりなおす</button>
+      </nav>
+      <section id="object-panel" class="panel" aria-label="ものを選ぶ" hidden>
+        <div class="panel-heading"><h2>なにを置く？</h2><button id="palette-close" aria-label="パレットを閉じる">✕</button></div>
+        <div class="palette" id="palette" aria-label="追加するもの"></div>
+        <label class="play-mode"><input type="checkbox" id="tyres-unbreakable"> タイヤが取れない</label>
+        <button id="clear">ぜんぶけす</button>
+      </section>
+      <div class="editbar" id="edit-controls" hidden>
+        <span id="selection"></span>
+        <button id="rotate-left" aria-label="選んだものを左に15度回転">↶</button>
+        <button id="rotate-right" aria-label="選んだものを右に15度回転">↷</button>
+      </div>
+      <div class="feedback" aria-live="polite"><p id="instruction"></p><div id="status" role="status"></div></div>
+      <button id="developer-toggle" class="developer-button" aria-label="開発者パネルを開く" aria-haspopup="dialog">⚙</button>
+      <dialog id="debug" aria-labelledby="debug-title">
+        <div class="panel-heading"><h2 id="debug-title">開発者パネル</h2><button id="developer-close" aria-label="開発者パネルを閉じる">✕</button></div>
+        <p class="small">保持・衝突の調整と計測。閉じたあと再生してね。</p>
+        <div class="test-buttons"><button id="impact">強いボールを当てる</button><button id="gentle">弱いボールを当てる</button><button id="hold-test">空中で保持（試験）</button><button id="debug-play">▶ 再生</button></div>
+        <div class="presets"><button id="preset-light">軽快（標準）</button><button id="preset-soft">やわらかい保持</button></div>
+        <label class="aim">ボールを狙う場所<select id="aim"><option value="wheel">接続中のタイヤ</option><option value="chassis">車体</option></select></label>
+        <div id="parameters"></div>
+        <h2>物理の計測</h2><div id="metrics"></div>
+        <h2>最近のできごと</h2><ol id="events"></ol>
+      </dialog>
+    </main>
+    <section id="rotate-hint" aria-label="横画面で遊ぼう" hidden>
+      <div class="rotate-icon" aria-hidden="true">↻</div>
+      <h1>横向きにしてね</h1>
+      <p>画面を横長にすると遊べるよ</p>
+    </section>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <radialGradient id="leather" cx=".32" cy=".25" r=".8"><stop stop-color="#fffdf2"/><stop offset=".6" stop-color="#e5dfcf"/><stop offset="1" stop-color="#9b9c96"/></radialGradient>
+    <clipPath id="edge"><circle cx="128" cy="128" r="124"/></clipPath>
+  </defs>
+  <circle cx="128" cy="128" r="125" fill="url(#leather)" stroke="#828580" stroke-width="2"/>
+  <g clip-path="url(#edge)" fill="none">
+    <path d="M39 5 C119 59 106 186 42 251 M215 5 C137 67 146 186 215 251" stroke="#b1a799" stroke-width="7"/>
+    <path d="M39 5 C119 59 106 186 42 251 M215 5 C137 67 146 186 215 251" stroke="#a83f3a" stroke-width="2"/>
+    <path d="M40 13 L52 12 M52 25 L64 21 M61 40 L76 36 M68 56 L84 52 M74 73 L91 68 M77 91 L95 88 M80 110 L98 109 M80 131 L98 133 M78 152 L96 158 M73 173 L91 179 M66 192 L84 199 M57 210 L73 217 M47 226 L63 234 M37 241 L50 249 M206 13 L220 15 M194 27 L208 31 M185 42 L199 46 M177 57 L192 62 M171 75 L186 79 M168 94 L184 97 M166 112 L182 113 M168 133 L184 132 M172 154 L189 150 M178 174 L194 169 M187 192 L202 186 M196 208 L210 202 M207 225 L219 217 M217 242 L229 233" stroke="#bc4843" stroke-width="4" stroke-linecap="round"/>
+    <path d="M23 67 Q41 31 76 20" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".35"/>
+  </g>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="wood" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f1cf91"/><stop offset=".5" stop-color="#ddb273"/><stop offset="1" stop-color="#b68146"/></linearGradient>
+    <clipPath id="face"><rect x="9" y="9" width="238" height="238" rx="5"/></clipPath>
+  </defs>
+  <rect x="1" y="1" width="254" height="254" rx="8" fill="#a3703d"/>
+  <rect x="6" y="6" width="244" height="244" rx="5" fill="url(#wood)"/>
+  <g clip-path="url(#face)" fill="none" stroke="#98602f" opacity=".25" stroke-width="1.5">
+    <path d="M-5 23 Q94 40 270 19 M-5 42 Q79 24 180 44 T270 38 M-5 66 Q130 84 270 55 M-5 88 Q80 73 170 89 T270 80 M-5 107 Q150 124 270 95 M-5 132 Q110 114 270 135 M-5 152 Q80 178 270 146 M-5 180 Q120 159 270 179 M-5 202 Q140 222 270 195 M-5 228 Q160 209 270 237"/>
+    <path d="M41 117 Q81 101 110 119 Q86 140 41 117Z M49 119 Q79 112 97 120 Q78 129 49 119Z M-4 116 Q30 124 40 133 T132 126 T261 115"/>
+  </g>
+  <path d="M7 247 L7 7 L248 7" fill="none" stroke="#ffe4b4" stroke-width="5" opacity=".7"/>
+  <path d="M249 9 L249 249 L9 249" fill="none" stroke="#87562d" stroke-width="5" opacity=".5"/>
+</svg>

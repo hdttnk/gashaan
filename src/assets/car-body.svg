@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="356" viewBox="0 0 440 178">
+  <defs>
+    <linearGradient id="paint" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#ffce8a"/><stop offset=".27" stop-color="#ed8d37"/><stop offset=".7" stop-color="#c65e22"/><stop offset="1" stop-color="#73301b"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#b9dcea"/><stop offset=".35" stop-color="#658da1"/><stop offset="1" stop-color="#243746"/>
+    </linearGradient>
+    <linearGradient id="chrome" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#ecf0ef"/><stop offset=".45" stop-color="#8e9ba2"/><stop offset=".6" stop-color="#d5dfdf"/><stop offset="1" stop-color="#46505b"/>
+    </linearGradient>
+    <mask id="arches" maskUnits="userSpaceOnUse" x="0" y="0" width="440" height="178">
+      <rect width="440" height="178" fill="white"/>
+      <circle cx="70" cy="220" r="68" fill="black"/>
+      <circle cx="370" cy="220" r="68" fill="black"/>
+    </mask>
+  </defs>
+  <!-- Side-view compact coupe. Body origin at (220,132), 200 SVG units per metre. -->
+  <g mask="url(#arches)">
+  <path d="M7 113 Q11 98 30 96 L93 92 L122 49 Q130 36 149 36 L257 36 Q273 36 287 48 L339 93 L404 101 Q431 103 433 120 L433 152 Q431 164 413 165 L26 165 Q9 163 7 152Z" fill="url(#paint)" stroke="#603a2c" stroke-width="3"/>
+  <path d="M105 92 L132 53 Q136 46 151 46 L199 46 L199 92Z" fill="url(#glass)" stroke="#363f43" stroke-width="4"/>
+  <path d="M213 46 L254 46 Q268 46 278 55 L320 92 L213 92Z" fill="url(#glass)" stroke="#363f43" stroke-width="4"/>
+  <path d="M141 52 L172 52 L135 86 L115 86Z M229 52 L248 52 L283 84 L263 84Z" fill="#e4f6fa" opacity=".25"/>
+  <path d="M98 95 L333 95" stroke="#ffdaa5" stroke-width="3" opacity=".8"/>
+  <path d="M14 118 Q171 107 423 118" stroke="#ffdda3" stroke-width="2" opacity=".6" fill="none"/>
+  <path d="M15 146 L425 146 L423 158 L22 158Z" fill="#693823" opacity=".6"/>
+  <path d="M104 100 L104 141 Q105 147 113 148 L310 148 Q317 148 318 140 L318 102" fill="none" stroke="#864628" stroke-width="2"/>
+  <path d="M206 100 L206 146" stroke="#864628" stroke-width="2"/>
+  <rect x="222" y="104" width="22" height="5" rx="2.5" fill="url(#chrome)"/>
+  <rect x="125" y="104" width="20" height="5" rx="2.5" fill="url(#chrome)"/>
+  <path d="M307 85 L325 85 Q332 85 330 93 L307 95Z" fill="#3c4c54" stroke="#243039" stroke-width="2"/>
+  <path d="M413 109 L432 119 L430 132 L411 129Z" fill="#eef3d7" stroke="#766346" stroke-width="2"/>
+  <path d="M8 110 L25 109 L25 130 L8 134Z" fill="#ac2227" stroke="#642020" stroke-width="2"/>
+  <path d="M9 115 L21 114" stroke="#f2776a" stroke-width="3"/>
+  <rect x="3" y="140" width="27" height="11" rx="4" fill="url(#chrome)"/>
+  <rect x="408" y="141" width="29" height="11" rx="4" fill="url(#chrome)"/>
+  <path d="M375 136 L401 137" stroke="#382a26" stroke-width="4"/>
+  <path d="M145 39 L255 39" stroke="#ffe1b0" stroke-width="2" opacity=".9"/>
+  <path d="M23 163 L412 163" stroke="#352b29" stroke-width="4"/>
+  </g>
+  <path d="M30 165 A68 68 0 0 1 110 165 M330 165 A68 68 0 0 1 410 165" fill="none" stroke="#563625" stroke-width="5"/>
+  <path d="M30 165 A68 68 0 0 1 110 165 M330 165 A68 68 0 0 1 410 165" fill="none" stroke="#dda067" stroke-width="2"/>
+</svg>

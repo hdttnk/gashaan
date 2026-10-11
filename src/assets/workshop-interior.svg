@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1576" height="848" viewBox="12 12 1576 848">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e8e5dc"/><stop offset=".6" stop-color="#d0d2c9"/><stop offset="1" stop-color="#b8bcb3"/></linearGradient>
+    <linearGradient id="steel" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#68777c"/><stop offset=".4" stop-color="#c3cccb"/><stop offset=".7" stop-color="#a1aeaf"/><stop offset="1" stop-color="#596b72"/></linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f1f8f3"/><stop offset="1" stop-color="#9ebbc4"/></linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#cca878"/><stop offset="1" stop-color="#7f6044"/></linearGradient>
+    <pattern id="grain" width="200" height="120" patternUnits="userSpaceOnUse"><path d="M12 18 H89 M152 76 H198 M35 103 H71" stroke="#6f7b74" stroke-width="1" opacity=".08"/></pattern>
+  </defs>
+  <rect width="1600" height="900" fill="url(#wall)"/>
+  <path d="M400 0 V860 M800 0 V860 M1200 0 V860" stroke="#abb3aa" stroke-width="3" opacity=".3"/>
+  <rect width="1600" height="860" fill="url(#grain)"/>
+  <rect x="84" y="74" width="366" height="244" rx="5" fill="#a5afaa" opacity=".45"/>
+  <rect x="75" y="65" width="366" height="244" rx="4" fill="#899a9d"/>
+  <rect x="85" y="75" width="346" height="224" fill="url(#glass)"/>
+  <path d="M258 75 V299 M85 187 H431" stroke="#899a9d" stroke-width="9"/>
+  <path d="M85 299 L431 299" stroke="#f5f5e9" stroke-width="4"/>
+  <path d="M442 126 L746 482 L746 753 L442 342Z" fill="#fffbea" opacity=".09"/>
+  <path d="M8 805 H1592" stroke="#949f97" stroke-width="3" opacity=".25"/>
+  <rect x="0" y="860" width="1600" height="40" fill="url(#floor)"/>
+  <path d="M0 861 H1600" stroke="#efe0bc" stroke-width="4"/>
+  <path d="M0 878 H1600 M0 896 H1600 M260 863 V878 M600 878 V896 M980 863 V878 M1350 878 V898" stroke="#654e37" stroke-width="2" opacity=".5"/>
+  <path d="M20 868 Q170 878 370 867 M714 886 Q920 879 1154 889 M1200 869 Q1400 878 1575 869" fill="none" stroke="#785936" stroke-width="1" opacity=".5"/>
+  <rect x="0" y="0" width="12" height="860" fill="url(#steel)"/>
+  <rect x="1588" y="0" width="12" height="860" fill="url(#steel)"/>
+  <rect x="0" y="0" width="1600" height="10" fill="#9ca9ab"/>
+  <path d="M13 10 V860 M1587 10 V860" stroke="#eff1ea" stroke-width="2" opacity=".7"/>
+  <g fill="#475b65"><circle cx="6" cy="20" r="2"/><circle cx="6" cy="420" r="2"/><circle cx="6" cy="840" r="2"/><circle cx="1594" cy="20" r="2"/><circle cx="1594" cy="420" r="2"/><circle cx="1594" cy="840" r="2"/></g>
+</svg>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <radialGradient id="rubber" cx=".35" cy=".25" r=".8"><stop stop-color="#424950"/><stop offset=".65" stop-color="#21272d"/><stop offset="1" stop-color="#0e1217"/></radialGradient>
+    <radialGradient id="rim"><stop stop-color="#dfe5e7"/><stop offset=".7" stop-color="#a3afb6"/><stop offset="1" stop-color="#4b5964"/></radialGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#edf1f2"/><stop offset=".5" stop-color="#b0bcc3"/><stop offset="1" stop-color="#647583"/></linearGradient>
+    <path id="spoke" d="M117 115 L114 59 Q125 53 136 59 L136 116Z"/>
+  </defs>
+  <circle cx="128" cy="128" r="125" fill="url(#rubber)" stroke="#10151b" stroke-width="5"/>
+  <circle cx="128" cy="128" r="111" fill="none" stroke="#60686f" stroke-opacity=".4" stroke-width="2" stroke-dasharray="3 9"/>
+  <circle cx="128" cy="128" r="93" fill="none" stroke="#080d11" stroke-width="4"/>
+  <circle cx="128" cy="128" r="78" fill="url(#rim)" stroke="#d2dadd" stroke-width="3"/>
+  <circle cx="128" cy="128" r="66" fill="#23303a"/>
+  <g fill="url(#metal)" stroke="#647580" stroke-width="1.5">
+    <use href="#spoke"/><use href="#spoke" transform="rotate(60 128 128)"/><use href="#spoke" transform="rotate(120 128 128)"/>
+    <use href="#spoke" transform="rotate(180 128 128)"/><use href="#spoke" transform="rotate(240 128 128)"/><use href="#spoke" transform="rotate(300 128 128)"/>
+  </g>
+  <circle cx="128" cy="128" r="22" fill="url(#rim)" stroke="#455763" stroke-width="3"/>
+  <circle cx="128" cy="128" r="9" fill="#3c505e"/>
+  <circle cx="128" cy="105" r="3" fill="#eef2f3"/>
+  <path d="M125 26 L133 26 L133 34 L125 34Z" fill="#c5c0a5" opacity=".7"/>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <radialGradient id="leather" cx=".32" cy=".25" r=".8"><stop stop-color="#fffef6"/><stop offset=".55" stop-color="#e7e9e6"/><stop offset="1" stop-color="#8c9aa0"/></radialGradient>
+    <clipPath id="edge"><circle cx="128" cy="128" r="124"/></clipPath>
+  </defs>
+  <circle cx="128" cy="128" r="125" fill="url(#leather)" stroke="#62717a" stroke-width="2"/>
+  <g clip-path="url(#edge)" stroke="#59646a" stroke-width="2" stroke-linejoin="round">
+    <path d="M128 75 L174 108 L156 157 L100 157 L82 108Z" fill="#293842"/>
+    <path d="M100 157 L74 190 L94 232 M156 157 L184 187 L178 224 M174 108 L216 102 L243 127 M128 75 L148 30 M82 108 L49 91 L32 132 M74 190 L31 185 M184 187 L226 180" fill="none"/>
+    <path d="M124 9 L148 30 L187 25 L189 -5Z M29 35 L62 54 L49 91 L8 100 L2 63Z M216 102 L206 60 L241 37 L271 86Z M94 232 L134 211 L178 224 L179 262 L104 267Z M31 185 L21 225 L-7 200 L-12 149Z M226 180 L265 168 L264 222 L237 231Z" fill="#34434b"/>
+    <path d="M62 54 L84 18 M49 91 L32 132 L21 171 M187 25 L206 60 M216 102 L217 148 L226 180 M94 232 L134 211 L125 178" fill="none"/>
+  </g>
+  <path d="M28 74 Q44 35 79 24" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".28"/>
+</svg>
