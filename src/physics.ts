@@ -29,6 +29,11 @@ export interface StageSnapshot {
   parameters: Parameters; rules?: { tyresUnbreakable: boolean }; nextId: number;
 }
 export type Scenario = 'rest' | 'drop' | 'rolling';
+interface DeletedGroup {
+  snapshot: StageSnapshot;
+  selected: string;
+  velocities: { id: string; x: number; y: number; angular: number; testBall: boolean }[];
+}
 const clamp = (v: number, min: number, max: number) => Math.max(min, Math.min(max, v));
 const angleDelta = (v: number) => Math.atan2(Math.sin(v), Math.cos(v));
 const bodyPose = (body: Body): Pose => ({ x: body.getPosition().x, y: body.getPosition().y, angle: body.getAngle() });
@@ -46,6 +51,8 @@ export class PhysicsLab {
   desiredTarget = Vec2(); target = Vec2(); holdAngle = 0; holdForceMeasured = 0; holdError = 0;
   lastStepMs = 0; maxContactImpulse = 0; speedClamps = 0; fault: string | null = null; notice = '';
   private nextId = 1;
+  private deletions: DeletedGroup[] = [];
+  get canUndoDelete() { return this.paused && this.deletions.length > 0; }
   private holdPointerOffset = Vec2();
   private editing: { root: Pose; start: XY; initial: Map<string, Pose> } | null = null;
 
@@ -56,6 +63,7 @@ export class PhysicsLab {
   part(id: string) { return this.parts.find(p => p.id === id)!; }
 
   private newWorld() {
+    this.deletions = [];
     this.hold = null; this.heldBody = null; this.holdForceMeasured = 0; this.holdError = 0;
     this.editing = null; this.editPreview = null; this.selected = null;
     this.parts = []; this.objects = []; this.wheels = []; this.balls = [];
@@ -203,7 +211,55 @@ export class PhysicsLab {
       for (const w of this.wheels) { w.force = 0; w.peakForce = 0; w.impulse = 0; w.peakImpulse = 0; w.loadTime = 0; }
       this.dirty = false; this.log('この配置からスタート（やりなおすの基準を更新）');
     }
+    if (!paused) this.deletions = [];
     this.paused = paused; this.notice = ''; this.log(paused ? '停止：配置を変えられるよ' : '再生');
+  }
+  /** Delete only the connected assembly; detached parts remain independent. */
+  deleteSelected() {
+    if (!this.paused || !this.selected || this.editing || !this.part(this.selected)) return false;
+    const selected = this.selected, group = this.group(selected), ids = new Set(group.map(p => p.id));
+    const snapshot = this.captureSnapshot();
+    snapshot.parts = snapshot.parts.filter(p => ids.has(p.id));
+    snapshot.objects = snapshot.objects.filter(o => snapshot.parts.some(p => p.objectId === o.id));
+    snapshot.joints = snapshot.joints.filter(j => ids.has(j.a) || ids.has(j.b));
+    this.deletions.push({ snapshot, selected, velocities: group.map(p => ({ id: p.id,
+      x: p.body.getLinearVelocity().x, y: p.body.getLinearVelocity().y,
+      angular: p.body.getAngularVelocity(), testBall: this.balls.includes(p.body) })) });
+    if (this.deletions.length > 20) this.deletions.shift();
+    for (const link of this.wheels) if ((ids.has(link.a) || ids.has(link.b)) && link.joint) this.world.destroyJoint(link.joint);
+    this.wheels = this.wheels.filter(w => !ids.has(w.a) && !ids.has(w.b));
+    this.balls = this.balls.filter(b => !group.some(p => p.body === b));
+    for (const p of group) this.world.destroyBody(p.body);
+    this.parts = this.parts.filter(p => !ids.has(p.id));
+    this.objects = this.objects.filter(o => this.parts.some(p => p.objectId === o.id));
+    this.selected = null; this.dirty = true;
+    this.notice = 'けしたよ。「けすのをもどす」で戻せるよ'; this.log('選んだものをけした'); return true;
+  }
+  undoDelete() {
+    if (!this.canUndoDelete || this.editing) return false;
+    const entry = this.deletions.at(-1)!, snapshot = entry.snapshot;
+    const restored = snapshot.parts.map(p => ({ ...p,
+      def: CATALOG[snapshot.objects.find(o => o.id === p.objectId)!.kind].parts.find(d => d.id === p.definitionId)! }));
+    // Never restore into new objects or exceed the same limits used by the palette.
+    if (this.dynamicBodies().length + restored.filter(p => !p.def.static).length > LIMITS.dynamicBodies
+      || this.parts.filter(p => p.def.static).length + restored.filter(p => p.def.static).length > LIMITS.staticObjects
+      || this.wheels.length + snapshot.joints.length > LIMITS.joints) {
+      this.notice = 'いっぱいだよ。ほかのものをけしてから戻してね'; return false;
+    }
+    if (restored.some(p => !this.poseInStage(p.def, p.pose) || this.parts.some(other => {
+      if (snapshot.joints.some(j => j.connected && ((j.a === p.id && j.b === other.id) || (j.b === p.id && j.a === other.id)))) return false;
+      return overlaps(p.def.shape, p.pose, other.def.shape, bodyPose(other.body));
+    }))) { this.notice = '戻す場所が重なっているよ。ほかのものを少し離してね'; return false; }
+    for (const object of snapshot.objects) if (!this.objects.some(o => o.id === object.id)) this.objects.push({ ...object });
+    for (const p of restored) {
+      const part = this.createPart(p.id, p.objectId, p.def, p.pose), velocity = entry.velocities.find(v => v.id === p.id)!;
+      part.body.setGravityScale(p.gravityScale);
+      part.body.setLinearVelocity(Vec2(velocity.x, velocity.y)); part.body.setAngularVelocity(velocity.angular);
+      if (velocity.testBall) this.balls.push(part.body);
+    }
+    for (const joint of snapshot.joints) this.createLink(joint);
+    this.deletions.pop(); this.selected = entry.selected; this.dirty = true;
+    this.notice = 'けしたものを戻したよ'; this.log('削除を取り消した'); return true;
   }
   addObject(kind: Kind, point?: XY, angle = kind === 'ramp' ? -0.25 : 0): string | null {
     if (!this.paused) { this.notice = '追加するときは停止してね'; return null; }

@@ -195,7 +195,9 @@ function renderMetrics() {
   ui('selection').textContent = selected ? `${CATALOG[lab.objects.find(o => o.id === selected.objectId)!.kind].label}${selected.def.role === 'wheel' ? 'の外れたタイヤ' : ''}を選択中` : '動かしたいものをつかんでね';
   ui('edit-controls').hidden = !lab.paused || !selected;
   for (const kind of Object.keys(CATALOG)) ui<HTMLButtonElement>(`add-${kind}`).disabled = !lab.paused;
-  for (const id of ['rotate-left', 'rotate-right']) ui<HTMLButtonElement>(id).disabled = !lab.paused || !selected || activePointer !== null;
+  for (const id of ['rotate-left', 'rotate-right', 'delete-selected']) ui<HTMLButtonElement>(id).disabled = !lab.paused || !selected || activePointer !== null;
+  ui('undo-delete').hidden = !lab.canUndoDelete;
+  ui<HTMLButtonElement>('undo-delete').disabled = activePointer !== null;
   for (const id of ['impact', 'gentle']) ui<HTMLButtonElement>(id).disabled = lab.paused || !lab.parts.some(p => p.def.role === 'chassis');
   ui('hold-test').textContent = testHold && lab.hold ? '試験の保持をはなす' : '空中で保持（試験）';
 }
@@ -224,6 +226,8 @@ ui('clear').addEventListener('click', () => { cancelInteraction(); lab.clear(); 
 for (const kind of Object.keys(CATALOG) as Kind[]) ui(`add-${kind}`).addEventListener('click', () => { cancelInteraction(); if (lab.addObject(kind)) closePalette(); renderMetrics(); });
 ui('rotate-left').addEventListener('click', () => { lab.rotateSelected(-Math.PI / 12); renderMetrics(); });
 ui('rotate-right').addEventListener('click', () => { lab.rotateSelected(Math.PI / 12); renderMetrics(); });
+ui('delete-selected').addEventListener('click', () => { lab.deleteSelected(); renderMetrics(); });
+ui('undo-delete').addEventListener('click', () => { lab.undoDelete(); renderMetrics(); });
 ui('impact').addEventListener('click', () => fireBall(true));
 ui('gentle').addEventListener('click', () => fireBall(false));
 ui('hold-test').addEventListener('click', () => {

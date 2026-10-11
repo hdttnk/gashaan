@@ -4,6 +4,107 @@ import { Vec2 } from 'planck';
 import { DEFAULTS, FLOOR, LIMITS, PhysicsLab, STEP, WIDTH } from '../src/physics';
 import { vertices } from '../src/geometry';
 
+test('delete connected car and undo preserves other objects and connections', () => {
+  const lab = new PhysicsLab(); lab.setPaused(true);
+  const original = lab.captureSnapshot(), car = lab.chassis;
+  lab.addObject('block', { x: 3, y: 2 });
+  const block = lab.parts.find(p => p.def.role !== 'chassis' && p.def.role !== 'wheel')!;
+  lab.selected = lab.partFor(car)!.id;
+  assert.ok(lab.deleteSelected());
+  assert.equal(lab.parts.length, 1); assert.equal(lab.wheels.length, 0);
+  assert.equal(lab.world.getBodyCount(), 2); assert.equal(lab.selected, null);
+  lab.addObject('ball', { x: 5, y: 2 });
+  assert.ok(lab.undoDelete());
+  assert.equal(lab.parts.length, 5); assert.equal(connected(lab), 2);
+  assert.equal(lab.part(block.id).body, block.body);
+  for (const p of original.parts) assert.deepEqual(lab.captureSnapshot().parts.find(q => q.id === p.id), p);
+  assert.equal(lab.canUndoDelete, false);
+  lab.setPaused(false); run(lab, 2); finiteAndContained(lab);
+});
+
+test('detached wheel deletes separately and sequential undo restores partial cars', () => {
+  const lab = new PhysicsLab(); lab.setPaused(true);
+  const link = lab.wheels[0]; lab.world.destroyJoint(link.joint!); link.joint = null;
+  link.body.setTransform(Vec2(3, 2), 0);
+  lab.selected = link.b; assert.ok(lab.deleteSelected());
+  assert.equal(lab.parts.length, 2); assert.equal(connected(lab), 1);
+  lab.selected = lab.partFor(lab.chassis)!.id; assert.ok(lab.deleteSelected());
+  assert.equal(lab.objects.length, 0); assert.equal(lab.parts.length, 0);
+  assert.ok(lab.undoDelete()); assert.equal(lab.parts.length, 2);
+  assert.ok(lab.undoDelete()); assert.equal(lab.parts.length, 3);
+  assert.equal(lab.objects.length, 1); assert.equal(lab.detachedCount, 1);
+  assert.equal(connected(lab), 1); assert.equal(lab.selected, link.b);
+});
+
+test('undo refuses an occupied location without losing history or changing the world', () => {
+  const lab = new PhysicsLab(); lab.clear();
+  lab.addObject('triangle', { x: 3, y: 3 }); assert.ok(lab.deleteSelected());
+  lab.addObject('block', { x: 3, y: 3 });
+  const before = lab.captureSnapshot(); assert.equal(lab.undoDelete(), false);
+  assert.deepEqual(lab.captureSnapshot(), before); assert.ok(lab.canUndoDelete);
+  lab.beginEdit(Vec2(3, 3)); lab.moveEdit(Vec2(6, 3)); lab.commitEdit();
+  assert.ok(lab.undoDelete()); assert.equal(lab.objects.length, 2);
+});
+
+test('deletion history clears at play, redo, clear and resize; running deletion is rejected', () => {
+  for (const action of ['play', 'redo', 'clear', 'resize'] as const) {
+    const lab = new PhysicsLab(); lab.setPaused(true);
+    lab.selected = lab.partFor(lab.chassis)!.id; lab.deleteSelected();
+    assert.ok(lab.canUndoDelete);
+    if (action === 'play') lab.setPaused(false);
+    if (action === 'redo') lab.redo();
+    if (action === 'clear') lab.clear();
+    if (action === 'resize') lab.resizeArena(18, 8.6);
+    assert.equal(lab.canUndoDelete, false);
+    if (action === 'play') { lab.setPaused(true); assert.equal(lab.canUndoDelete, false); lab.redo(); assert.equal(lab.parts.length, 0); }
+  }
+  const lab = new PhysicsLab(); lab.selected = lab.partFor(lab.chassis)!.id;
+  assert.equal(lab.deleteSelected(), false); assert.equal(lab.parts.length, 3);
+});
+
+test('static ramp and test balls delete and restore without leaking bodies or IDs', () => {
+  const lab = new PhysicsLab(); lab.clear();
+  lab.addObject('ramp', { x: 4, y: 3 });
+  for (let i = 0; i < 30; i++) { assert.ok(lab.deleteSelected()); assert.ok(lab.undoDelete()); }
+  assert.equal(lab.world.getBodyCount(), 2); assert.equal(lab.parts[0].body.isStatic(), true);
+  const vehicle = new PhysicsLab(); const ball = vehicle.fireBall()!;
+  vehicle.setPaused(true); vehicle.selected = vehicle.partFor(ball)!.id;
+  assert.ok(vehicle.deleteSelected()); assert.equal(vehicle.balls.length, 0);
+  assert.ok(vehicle.undoDelete()); assert.equal(vehicle.balls.length, 1);
+  const ids = vehicle.parts.map(p => p.id); vehicle.addObject('block', { x: 5, y: 2 });
+  assert.equal(new Set(vehicle.parts.map(p => p.id)).size, ids.length + 1);
+});
+
+test('deleting chassis leaves a detached wheel and undo restores only original connections', () => {
+  const lab = new PhysicsLab(); lab.setPaused(true);
+  const link = lab.wheels[0]; lab.world.destroyJoint(link.joint!); link.joint = null;
+  link.body.setTransform(Vec2(3, 2), 0);
+  lab.selected = lab.partFor(lab.chassis)!.id; lab.deleteSelected();
+  assert.equal(lab.parts.length, 1); assert.equal(lab.parts[0].body, link.body);
+  assert.ok(lab.undoDelete()); assert.equal(lab.parts.length, 3);
+  assert.equal(connected(lab), 1); assert.equal(lab.detachedCount, 1);
+  assert.equal(lab.part(link.b).body, link.body);
+});
+
+test('undo respects capacity, active editing and the twenty-deletion bound', () => {
+  const lab = new PhysicsLab(); lab.clear();
+  lab.addObject('block', { x: 3, y: 2 }); const selected = lab.selected!;
+  assert.ok(lab.beginEdit(Vec2(3, 2))); assert.equal(lab.deleteSelected(), false);
+  lab.cancelEdit();
+  for (let i = 0; i < 21; i++) { if (i) lab.addObject('block', { x: 3, y: 2 }); assert.ok(lab.deleteSelected()); }
+  for (let i = 0; i < 20; i++) {
+    assert.ok(lab.undoDelete());
+    // Move the restored block away before restoring the next one at the same spot.
+    const body = lab.part(lab.selected!).body; body.setTransform(Vec2(5 + (i % 5) * 2, 1 + Math.floor(i / 5) * 1.7), 0);
+  }
+  assert.equal(lab.canUndoDelete, false); assert.equal(lab.part(selected), undefined);
+  const capacity = new PhysicsLab(); capacity.setPaused(true);
+  capacity.selected = capacity.partFor(capacity.chassis)!.id; capacity.deleteSelected();
+  for (let i = 0; i < LIMITS.dynamicBodies; i++) assert.ok(capacity.addObject('ball', { x: 0.8 + (i % 12) * 1.2, y: 0.8 + Math.floor(i / 12) * 1.2 }));
+  assert.equal(capacity.undoDelete(), false); assert.ok(capacity.canUndoDelete);
+  assert.equal(capacity.parts.length, LIMITS.dynamicBodies);
+});
+
 function run(lab: PhysicsLab, seconds: number) {
   for (let i = 0; i < Math.round(seconds / STEP); i++) lab.step();
 }

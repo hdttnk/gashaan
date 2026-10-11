@@ -27,6 +27,8 @@ button:disabled { opacity: .4; cursor: default; }
 .editbar { position: absolute; z-index: 2; bottom: var(--bottom); left: var(--left); display: flex; align-items: center; gap: 8px; }
 .editbar span { max-width: 130px; padding: 7px 10px; border-radius: 12px; font-size: 11px; background: #fffdf4e8; }
 .editbar button { font-size: 22px; padding: 5px; min-width: 48px; }
+#delete-selected { font-size: 15px; padding: 10px; color: #a34748; background: #fff1e9; }
+.undo-delete { position: absolute; z-index: 2; bottom: calc(var(--bottom) + 58px); left: var(--left); font-size: 13px; }
 .feedback { position: absolute; z-index: 1; top: calc(var(--top) + 62px); left: 50%; transform: translateX(-50%); width: min(500px, calc(100% - 32px)); text-align: center; pointer-events: none; }
 .feedback p { margin: 0; font-size: 12px; color: #3a5752; text-shadow: 0 1px 3px #fff; }
 #status { display: inline-block; margin-top: 6px; padding: 5px 10px; border-radius: 12px; background: #fffdf4d9; font-size: 11px; }
